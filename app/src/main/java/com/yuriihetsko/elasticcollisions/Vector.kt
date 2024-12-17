@@ -20,6 +20,10 @@ object VectorUtils {
         return Vector(this.x + other.x, this.y + other.y)
     }
 
+    fun Vector.mult(other: Vector): Vector {
+        return Vector(this.x * other.x, this.y * other.y)
+    }
+
     fun Vector.div(other: Double): Vector {
         return Vector(this.x / x, this.y / y)
     }

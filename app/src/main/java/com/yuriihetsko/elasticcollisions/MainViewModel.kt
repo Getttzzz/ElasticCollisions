@@ -21,13 +21,16 @@ class MainViewModel : ViewModel() {
         viewModelScope.launch {
             while (true) {
                 redraw()
+                delay(UPDATE_SPEED)
             }
-            delay(UPDATE_SPEED)
         }
     }
 
     private fun redraw() {
-        //do magic
+        _mainState.value = MainState(
+            particles = mutableListOf(),
+            isCanvasSizeCalculated = true
+        )
     }
 
     companion object {

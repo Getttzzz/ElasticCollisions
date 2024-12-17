@@ -16,7 +16,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.drawscope.DrawScope.Companion.DefaultBlendMode
+import androidx.compose.ui.graphics.drawscope.Fill
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -28,8 +32,8 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
+            val viewModel = viewModel<MainViewModel>()
             ElasticCollisionsTheme {
-                val viewModel = viewModel<MainViewModel>()
                 MainScreen(
                     Modifier
                         .fillMaxSize()
@@ -56,7 +60,17 @@ fun MainScreen(modifier: Modifier = Modifier, viewModel: MainViewModel) {
             }
             .background(Color.LightGray)
     ) {
-        //todo magic
+        if (!mainState.isCanvasSizeCalculated) return@Canvas
+
+        drawCircle(
+            color = Color.Yellow,
+            radius = 50f,
+            center = Offset(100f, 100f),
+            alpha = 0.7f,
+            style = Stroke(width = 5f, ),
+            colorFilter = null,
+            blendMode = DefaultBlendMode,
+        )
     }
 }
 

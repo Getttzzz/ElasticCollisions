@@ -59,6 +59,7 @@ fun MainScreen(modifier: Modifier = Modifier, viewModel: MainViewModel) {
                 }
             }
             .background(Color.DarkGray)
+        //todo add on click adding Particles
     ) {
         if (!mainState.isCanvasSizeCalculated) return@Canvas
 

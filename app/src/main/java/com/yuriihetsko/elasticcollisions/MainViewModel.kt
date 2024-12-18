@@ -11,23 +11,20 @@ import kotlinx.coroutines.launch
  * Idea number 1: change position and velocity of the particles based on accelerometer.
  * Replicate behavior of steel balls on the table.
  *
+ * Idea number 2: add DVD staff with TV box on top with transparent.
  * */
 
 class MainViewModel : ViewModel() {
 
     data class MainState(
         val particles: MutableList<Particle> = mutableListOf<Particle>(
-            Particle(400.0, 400.0),
-            Particle(400.0, 400.0),
-            Particle(400.0, 400.0),
-            Particle(400.0, 400.0),
-            Particle(400.0, 400.0),
-            Particle(400.0, 400.0),
-            Particle(400.0, 400.0),
-            Particle(400.0, 400.0),
-            Particle(400.0, 400.0),
-
-        ),
+            Particle(200.0, 200.0),
+            Particle(200.0, 500.0),
+            Particle(200.0, 900.0),
+            Particle(200.0, 1200.0),
+            Particle(200.0, 1500.0),
+            Particle(200.0, 2000.0),
+            ),
         val isCanvasSizeCalculated: Boolean = false,
         val counter: Long = 0,
     )
@@ -48,6 +45,12 @@ class MainViewModel : ViewModel() {
         var counter = _mainState.value.counter
         val particles = _mainState.value.particles
         val particlesUpdated = mutableListOf<Particle>()
+
+        particles.forEachIndexed { i, particleA ->
+            for (j in i + 1..particles.size - 1) {
+                particleA.collide(particles[j])
+            }
+        }
 
         particles.forEach { particle ->
 

@@ -15,7 +15,7 @@ data class Particle(val x: Double, val y: Double) {
     var velocity = VectorUtils.random() // speed
     var acceleration = VectorUtils.zero()
     var mass = Random.nextDouble(2.0, 10.0)
-    var radius = sqrt(mass) * 20
+    var radius = sqrt(mass) * SCALE_FACTOR
     val color = Color(red = Random.nextInt(20..220), green = Random.nextInt(20..220), blue = Random.nextInt(20..220))
 
     // F = M * A - Newton's second law
@@ -36,5 +36,9 @@ data class Particle(val x: Double, val y: Double) {
 
     override fun toString(): String {
         return "Particle { position=$position, velocity=$velocity, mass=$mass, radius=$radius }"
+    }
+
+    companion object {
+        private const val SCALE_FACTOR = 60
     }
 }

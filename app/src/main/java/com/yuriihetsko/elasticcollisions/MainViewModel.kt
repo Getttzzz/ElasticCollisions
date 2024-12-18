@@ -26,18 +26,7 @@ class MainViewModel : ViewModel() {
             Particle(400.0, 400.0),
             Particle(400.0, 400.0),
             Particle(400.0, 400.0),
-            Particle(400.0, 400.0),
-            Particle(400.0, 400.0),
-            Particle(400.0, 400.0),
-            Particle(400.0, 400.0),
-            Particle(400.0, 400.0),
-            Particle(400.0, 400.0),
-            Particle(400.0, 400.0),
-            Particle(400.0, 400.0),
-            Particle(400.0, 400.0),
-            Particle(400.0, 400.0),
-            Particle(400.0, 400.0),
-            Particle(400.0, 400.0),
+
         ),
         val isCanvasSizeCalculated: Boolean = false,
         val counter: Long = 0,
@@ -92,6 +81,6 @@ class MainViewModel : ViewModel() {
     }
 
     companion object {
-        private const val UPDATE_SPEED = 1L
+        private const val UPDATE_SPEED = 10L
     }
 }

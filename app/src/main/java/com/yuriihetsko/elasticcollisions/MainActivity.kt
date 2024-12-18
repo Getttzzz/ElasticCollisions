@@ -26,8 +26,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.yuriihetsko.elasticcollisions.ui.theme.ElasticCollisionsTheme
-import kotlin.random.Random
-import kotlin.random.nextInt
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -60,16 +58,25 @@ fun MainScreen(modifier: Modifier = Modifier, viewModel: MainViewModel) {
                     viewModel.endlessDrawing(newSize.width, newSize.height)
                 }
             }
-            .background(Color.Black)
+            .background(Color.DarkGray)
     ) {
         if (!mainState.isCanvasSizeCalculated) return@Canvas
 
         mainState.particles.forEach { particle ->
             drawCircle(
                 color = particle.color,
-                radius = (particle.radius * 2 ).toFloat(), // multiply by 2 is made for bouncing from edges.
+                radius = particle.radius.toFloat(),
                 center = Offset(particle.position.xComp.toFloat(), particle.position.yComp.toFloat()),
-                alpha = 0.8f,
+                alpha = 1f,
+                style = Stroke(5f),
+                colorFilter = null,
+                blendMode = DefaultBlendMode,
+            )
+            drawCircle(
+                color = particle.color,
+                radius = particle.radius.toFloat(),
+                center = Offset(particle.position.xComp.toFloat(), particle.position.yComp.toFloat()),
+                alpha = 0.65f,
                 style = Fill,
                 colorFilter = null,
                 blendMode = DefaultBlendMode,

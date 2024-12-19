@@ -1,12 +1,13 @@
 package com.yuriihetsko.elasticcollisions
 
-import androidx.compose.ui.graphics.Color
 import com.yuriihetsko.elasticcollisions.VectorUtils.add
-import com.yuriihetsko.elasticcollisions.VectorUtils.div
 import com.yuriihetsko.elasticcollisions.VectorUtils.dot
 import com.yuriihetsko.elasticcollisions.VectorUtils.mag
 import com.yuriihetsko.elasticcollisions.VectorUtils.mult
+import com.yuriihetsko.elasticcollisions.VectorUtils.setMag
 import com.yuriihetsko.elasticcollisions.VectorUtils.sub
+import com.yuriihetsko.elasticcollisions.ui.theme.particleColors
+import kotlin.math.round
 import kotlin.math.sqrt
 import kotlin.random.Random
 import kotlin.random.nextInt
@@ -15,21 +16,11 @@ import kotlin.random.nextInt
 data class Particle(val x: Double, val y: Double) {
 
     var position = Vector(x, y)
-    var velocity = VectorUtils.random() // speed
+    var velocity = VectorUtils.random(MIN_VELOCITY, MAX_VELOCITY)
     var acceleration = VectorUtils.zero()
-    var mass = Random.nextDouble(2.0, 10.0)
+    var mass = Random.nextDouble(MIN_MASS, MAX_MASS)
     var radius = sqrt(mass) * SCALE_FACTOR
-    val color = Color(red = Random.nextInt(20..220), green = Random.nextInt(20..220), blue = Random.nextInt(20..220))
-
-    // F = M * A - Newton's second law
-
-    //Collision detection
-
-    //Collision resolution
-
-    fun applyForce(force: Vector) {
-        acceleration = acceleration.add(force.div(mass))
-    }
+    val color = particleColors[Random.nextInt(0..15)]
 
     fun update() {
         velocity = velocity.add(acceleration)
@@ -42,15 +33,16 @@ data class Particle(val x: Double, val y: Double) {
         var distance = impactVector.mag()
 
         if (distance < radius + other.radius) {
-//            val overlap = distance - radius + other.radius
-//            var dirVector = impactVector.copy()
-//            dirVector = dirVector.setMag(overlap * 0.5)
-//            this.position = this.position.add(dirVector)
-//            other.position = other.position.sub(dirVector)
-//
-//            // Correct the distance
-//            distance = radius + other.radius
-//            impactVector = impactVector.setMag(distance)
+
+            // Push the particles out so that they are not overlapping
+            val overlap = distance - (radius + other.radius)
+            var dirVector = impactVector.copy()
+            dirVector = dirVector.setMag(overlap * 0.5)
+            this.position = this.position.add(dirVector)
+            other.position = other.position.sub(dirVector)
+            // Correct the distance
+            distance = radius + other.radius
+            impactVector = impactVector.setMag(distance)
 
             val mSum = mass + other.mass
             val vDiff = other.velocity.sub(this.velocity)
@@ -93,7 +85,17 @@ data class Particle(val x: Double, val y: Double) {
         return "Particle { position=$position, velocity=$velocity, mass=$mass, radius=$radius }"
     }
 
+    fun Double.round(decimals: Int): Double {
+        var multiplier = 1.0
+        repeat(decimals) { multiplier *= 10 }
+        return round(this * multiplier) / multiplier
+    }
+
     companion object {
         private const val SCALE_FACTOR = 50
+        private const val MIN_MASS = 3.0
+        private const val MAX_MASS = 10.0
+        private const val MIN_VELOCITY = 2.0
+        private const val MAX_VELOCITY = 4.0
     }
 }

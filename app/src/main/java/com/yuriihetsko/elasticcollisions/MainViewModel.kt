@@ -19,18 +19,20 @@ class MainViewModel : ViewModel() {
     data class MainState(
         val particles: MutableList<Particle> = mutableListOf<Particle>(
             Particle(200.0, 200.0),
-            Particle(200.0, 500.0),
-            Particle(200.0, 900.0),
-            Particle(200.0, 1200.0),
-            Particle(200.0, 1500.0),
-            Particle(200.0, 2000.0),
-            ),
+            Particle(400.0, 1200.0),
+        ),
         val isCanvasSizeCalculated: Boolean = false,
         val counter: Long = 0,
     )
 
     private val _mainState = MutableStateFlow(MainState())
     val mainState = _mainState.asStateFlow()
+
+    fun addParticle(x: Float, y: Float) {
+        val old = _mainState.value.particles
+        old.add(Particle(x.toDouble(), y.toDouble()))
+        _mainState.value = _mainState.value.copy(particles = old)
+    }
 
     fun endlessDrawing(width: Int, height: Int) {
         viewModelScope.launch {

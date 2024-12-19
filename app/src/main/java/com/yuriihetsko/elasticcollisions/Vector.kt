@@ -52,8 +52,8 @@ object VectorUtils {
         return Vector(this.xComp / xComp, this.yComp / yComp)
     }
 
-    fun random(): Vector {
-        return Vector(Random.nextDouble(2.0, 6.0), Random.nextDouble(2.0, 6.0))
+    fun random(from: Double, to: Double): Vector {
+        return Vector(Random.nextDouble(from, to), Random.nextDouble(from, to))
     }
 
     fun zero(): Vector {

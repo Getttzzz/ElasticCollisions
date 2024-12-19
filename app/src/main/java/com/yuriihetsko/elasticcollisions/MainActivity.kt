@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -21,7 +22,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.DrawScope.Companion.DefaultBlendMode
 import androidx.compose.ui.graphics.drawscope.Fill
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -48,6 +52,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun MainScreen(modifier: Modifier = Modifier, viewModel: MainViewModel) {
     val mainState by viewModel.mainState.collectAsState()
+    val haptic = LocalHapticFeedback.current
 
     Canvas(
         modifier = modifier
@@ -59,7 +64,18 @@ fun MainScreen(modifier: Modifier = Modifier, viewModel: MainViewModel) {
                 }
             }
             .background(Color.DarkGray)
-        //todo add on click adding Particles
+            .pointerInput(Unit) {
+                detectTapGestures(onTap = { offset ->
+                    println("GETZ.<top>.MainScreen --> offset.x=${offset.x} offset.y=${offset.y}")
+                    haptic.performHapticFeedback(HapticFeedbackType.TextHandleMove)
+
+                    viewModel.addParticle(offset.x, offset.y)
+                })
+//                detectDragGestures { change, _ ->
+//                    haptic.performHapticFeedback(HapticFeedbackType.TextHandleMove)
+//                    viewModel.setClickPosition(change.position.x, change.position.y)
+//                }
+            }
     ) {
         if (!mainState.isCanvasSizeCalculated) return@Canvas
 

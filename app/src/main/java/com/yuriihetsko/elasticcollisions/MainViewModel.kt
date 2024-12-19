@@ -46,33 +46,16 @@ class MainViewModel : ViewModel() {
         val particles = _mainState.value.particles
         val particlesUpdated = mutableListOf<Particle>()
 
-        particles.forEachIndexed { i, particleA ->
+        particles.forEachIndexed { i, currParticle ->
             for (j in i + 1..particles.size - 1) {
-                particleA.collide(particles[j])
-            }
-        }
-
-        particles.forEach { particle ->
-
-            particle.update()
-
-            if (particle.position.xComp > width - particle.radius) {
-                particle.position = particle.position.copy(xComp = width - particle.radius)
-                particle.velocity = particle.velocity.copy(xComp = particle.velocity.xComp * -1)
-            } else if (particle.position.xComp < particle.radius) {
-                particle.position = particle.position.copy(xComp = particle.radius)
-                particle.velocity = particle.velocity.copy(xComp = particle.velocity.xComp * -1)
+                currParticle.collide(particles[j])
             }
 
-            if (particle.position.yComp > height - particle.radius) {
-                particle.position = particle.position.copy(yComp = height - particle.radius)
-                particle.velocity = particle.velocity.copy(yComp = particle.velocity.yComp * -1)
-            } else if (particle.position.yComp < particle.radius) {
-                particle.position = particle.position.copy(yComp = particle.radius)
-                particle.velocity = particle.velocity.copy(yComp = particle.velocity.yComp * -1)
-            }
+            currParticle.update()
 
-            particlesUpdated.add(particle)
+            currParticle.edges(width, height)
+
+            particlesUpdated.add(currParticle)
         }
 
 

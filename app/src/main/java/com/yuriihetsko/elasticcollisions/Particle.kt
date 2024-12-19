@@ -6,7 +6,6 @@ import com.yuriihetsko.elasticcollisions.VectorUtils.div
 import com.yuriihetsko.elasticcollisions.VectorUtils.dot
 import com.yuriihetsko.elasticcollisions.VectorUtils.mag
 import com.yuriihetsko.elasticcollisions.VectorUtils.mult
-import com.yuriihetsko.elasticcollisions.VectorUtils.setMag
 import com.yuriihetsko.elasticcollisions.VectorUtils.sub
 import kotlin.math.sqrt
 import kotlin.random.Random
@@ -70,6 +69,24 @@ data class Particle(val x: Double, val y: Double) {
             other.velocity = other.velocity.add(deltaVB)
         }
 
+    }
+
+    fun edges(width: Int, height: Int) {
+        if (position.xComp > width - radius) {
+            position = position.copy(xComp = width - radius)
+            velocity = velocity.copy(xComp = velocity.xComp * -1)
+        } else if (position.xComp < radius) {
+            position = position.copy(xComp = radius)
+            velocity = velocity.copy(xComp = velocity.xComp * -1)
+        }
+
+        if (position.yComp > height - radius) {
+            position = position.copy(yComp = height - radius)
+            velocity = velocity.copy(yComp = velocity.yComp * -1)
+        } else if (position.yComp < radius) {
+            position = position.copy(yComp = radius)
+            velocity = velocity.copy(yComp = velocity.yComp * -1)
+        }
     }
 
     override fun toString(): String {

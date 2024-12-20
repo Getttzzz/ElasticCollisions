@@ -68,6 +68,14 @@ class MainViewModel : ViewModel() {
         )
     }
 
+    fun removeOneParticle() {
+        _mainState.value.particles.removeFirstOrNull()
+    }
+
+    fun removeAll() {
+        _mainState.value.particles.clear()
+    }
+
     companion object {
         private const val UPDATE_SPEED = 10L
     }
